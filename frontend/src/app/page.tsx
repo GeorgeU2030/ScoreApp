@@ -1,21 +1,16 @@
-import {Navbar, NavbarBrand, NavbarContent, NavbarItem, Link, Button} from "@nextui-org/react";
+'use client'
+import NavBar from "@/components/NavBar";
+import { Button } from "@nextui-org/react";
 import { Trophy } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
+
+  const router = useRouter();
+
   return (
     <div>
-     <Navbar className="border-2 border-[#23C7D9] rounded-lg">
-      <NavbarBrand>
-        <img src='/logo.png' className="w-10 h-10 mr-2"></img>
-        <p className="font-bold text-inherit">ScoreApp</p>
-      </NavbarBrand>
-      
-      <NavbarContent justify="end">
-        <NavbarItem className="lg:flex">
-          <Link className="text-white cursor-default">The Mandalorian</Link>
-        </NavbarItem>
-      </NavbarContent>
-    </Navbar>
+     <NavBar />
     <div className="flex flex-col items-center">
     <section className="w-3/4 flex">
       <div className="w-1/2 mt-8">
@@ -40,8 +35,10 @@ export default function Home() {
       <div className="w-1/2 mt-8 flex flex-col justify-center items-center ">
         <h1 className="mb-4 font-bold">SeasonApp</h1>
         <h3 className="mb-4">Soccer, Basketball, Tennis, Football, F1</h3>
-      <Button className="bg-[#23c7d987] hover:bg-[#23C7D9]" startContent={<Trophy />}>
-         Tournies
+      <Button className="bg-[#23c7d987] hover:bg-[#23C7D9]" startContent={<Trophy />}
+      onClick={() => router.push('/tournies')}
+      >
+      Tournies
       </Button>
       </div>
     </section>
