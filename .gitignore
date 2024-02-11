@@ -1,0 +1,80 @@
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
+
+# Visual Studio files
+.vs/
+*.suo
+*.user
+*.sln.docstates
+
+# Build output
+backend/bin/
+backend/obj/
+
+# NuGet packages
+/packages/
+
+launchSettings.json
+
+# MSTest test Results
+/TestResults/
+
+# Resharper files
+_ReSharper.*/
+
+# Rider files
+.idea/
+
+# Visual Studio Code files
+.vscode/
+
+# Compiled DLLs and PDBs
+*.dll
+*.pdb
+
+# Logs
+*.log
+
+# User-specific files
+*.userprefs
+*.usertasks
+*.usersettings
+
+# Ignore .NET Core SDK files
+.global.json
+*.swp
+
+
+# dependencies
+frontend/node_modules
+/.pnp
+.pnp.js
+.yarn/install-state.gz
+
+# testing
+/coverage
+
+# next.js
+frontend/.next/
+frontend/out/
+
+# production
+/build
+
+# misc
+.DS_Store
+*.pem
+
+# debug
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# local env files
+.env*.local
+
+# vercel
+.vercel
+
+# typescript
+*.tsbuildinfo
+next-env.d.ts
