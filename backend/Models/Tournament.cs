@@ -11,5 +11,7 @@ public partial class Tournament
 
     public string? LogoTournament { get; set; }
 
+    public string? Flag { get; set; }
+
     public virtual ICollection<Season> Seasons { get; set; } = new List<Season>();
 }

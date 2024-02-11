@@ -307,6 +307,9 @@ public partial class ScoreAppDbContext : DbContext
 
             entity.ToTable("TOURNAMENT");
 
+            entity.Property(e => e.Flag)
+                .HasMaxLength(500)
+                .IsUnicode(false);
             entity.Property(e => e.LogoTournament).HasMaxLength(500);
             entity.Property(e => e.NameTournament).HasMaxLength(100);
         });

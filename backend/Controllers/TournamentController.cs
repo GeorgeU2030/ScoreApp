@@ -22,5 +22,13 @@ namespace backend.Controllers
             var tournaments = await _context.Tournaments.ToListAsync();
             return Ok(tournaments);
         }
+
+        [HttpGet]
+        [Route("GetTournament/{id}")]
+        public async Task<IActionResult> GetTournament(int id)
+        {
+            var tournament = await _context.Tournaments.FirstOrDefaultAsync(t => t.TournamentId == id);
+            return Ok(tournament);
+        }
     }
 }
