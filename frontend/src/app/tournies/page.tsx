@@ -22,7 +22,6 @@ export default function page() {
     fetchTournaments();
   }, []);
 
-  console.log(tournaments)
   return (
     <div>
         <NavBar />
@@ -36,11 +35,11 @@ export default function page() {
                 </div>
                 <div className='mt-5 grid grid-cols-5 '>
                   {tournaments.map((tournament) => (
-                    <Link href={`/tournies/${tournament.tournamentId}`}>
-                    <div key={tournament.tournamentId} className='ml-6 bg-[#f2f2f2] border-2 border-[#23C7D9] flex flex-col items-center rounded-lg'
+                    <Link href={`/tournies/${tournament.id}`}>
+                    <div key={tournament.id} className='ml-6 bg-[#f2f2f2] border-2 border-[#23C7D9] flex flex-col items-center rounded-lg'
                     >  
-                      <img src={tournament.logoTournament} className='w-24 h-24 mt-4'></img>
-                      <h1 className='text-teal-800 mt-2'>{tournament.nameTournament}</h1>
+                      <img src={tournament.logo} className='w-24 h-24 mt-4'></img>
+                      <h1 className='text-teal-800 mt-2'>{tournament.name}</h1>
                       <img src={tournament.flag} className='w-8 h-4 mt-2'></img>
                     </div>
                     </Link>

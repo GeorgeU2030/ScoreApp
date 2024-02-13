@@ -1,4 +1,10 @@
 export interface Season {
-    seasonId: number;
+    id: number;
     edition: number;
+    champion: string | null;
+    subChampion: string | null;
+    tournamentId: number;
+    tournament: {
+    $ref: string;
+    } | null;
 }

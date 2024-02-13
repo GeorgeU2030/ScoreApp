@@ -1,3 +1,6 @@
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using backend.DTO;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -8,27 +11,42 @@ namespace backend.Controllers
     [Route("api/[controller]")]
     public class TournamentController : ControllerBase
     {
-        private readonly ScoreAppDbContext _context;
+        private readonly ScoreAppContext _context;
 
-        public TournamentController(ScoreAppDbContext context)
+        public TournamentController(ScoreAppContext context)
         {
             _context = context;
         }
 
         [HttpGet]
         [Route("GetTournaments")]
-        public async Task<IActionResult> GetTournaments()
+        public async Task<ActionResult<IEnumerable<Tournament>>> GetTournaments()
         {
-            var tournaments = await _context.Tournaments.ToListAsync();
-            return Ok(tournaments);
+            return await _context.Tournaments.ToListAsync();
         }
 
         [HttpGet]
         [Route("GetTournament/{id}")]
-        public async Task<IActionResult> GetTournament(int id)
+        public async Task<ActionResult<TournamentDTO>> GetTournament(int id)
         {
-            var tournament = await _context.Tournaments.FirstOrDefaultAsync(t => t.TournamentId == id);
-            return Ok(tournament);
+            var tournament = await _context.Tournaments.FindAsync(id);
+            if (tournament == null)
+            {
+                return NotFound();
+            }
+
+            var seasons = await _context.Seasons
+                .Where(s => s.TournamentId == id)
+                .ToListAsync();
+
+            var tournamentDTO = new TournamentDTO
+            {
+                Tournament = tournament,
+                Seasons = seasons
+            };
+
+            return tournamentDTO;
         }
+
     }
 }

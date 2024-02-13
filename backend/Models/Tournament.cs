@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
 
-namespace backend.Models;
-
-public partial class Tournament
+namespace backend.Models
 {
-    public int TournamentId { get; set; }
-
-    public string? NameTournament { get; set; }
-
-    public string? LogoTournament { get; set; }
-
+    public class Tournament
+{
+    public int Id { get; set; }
+    public string? Name { get; set; }
+    public string? Logo { get; set; }
     public string? Flag { get; set; }
 
-    public virtual ICollection<Season> Seasons { get; set; } = new List<Season>();
+    public virtual ICollection<Season>? Seasons { get; set; }
+}
 }

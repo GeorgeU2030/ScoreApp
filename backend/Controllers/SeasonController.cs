@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using backend.Models;
 using Microsoft.AspNetCore.Mvc;
@@ -14,50 +12,56 @@ namespace backend.Controllers
     [Route("api/[controller]")]
     public class SeasonController : ControllerBase
     {
-        private readonly ScoreAppDbContext _context;
+        private readonly ScoreAppContext _context;
 
-        public SeasonController(ScoreAppDbContext context)
+        public SeasonController(ScoreAppContext context)
         {
             _context = context;
         }
 
-        [HttpPost]
-        [Route("AddSeason/{torneyId}")]
-        public IActionResult AddSeason(int torneyId)
+
+        [HttpGet("{id}")]
+        public async Task<ActionResult<Season>> GetSeason(int id)
         {
-            try
+            var season = await _context.Seasons.FindAsync(id);
+
+            if (season == null)
             {
-                var torney = _context.Tournaments
-                    .Include(t => t.Seasons)
-                    .FirstOrDefault(t => t.TournamentId == torneyId);
-
-                if (torney == null)
-                {
-                    return NotFound("Torney not found");
-                }
-
-                var lastSeason = torney.Seasons.OrderByDescending(s => s.SeasonId).FirstOrDefault();
-                var newEdition = (lastSeason?.Edition ?? 0) + 1;
-                var newSeason = new Season
-                {
-                    Edition = newEdition,
-                    TournamentId = torneyId
-                };
-
-                torney.Seasons.Add(newSeason);
-                _context.SaveChanges();
-
-                var jsonSerializerOptions = new JsonSerializerOptions
-                {
-                    ReferenceHandler = ReferenceHandler.Preserve
-                };  
-
-                return Ok(JsonSerializer.Serialize(newSeason, jsonSerializerOptions));
+                return NotFound();
             }
-            catch (Exception ex)
+
+            return season;
+        }
+
+        [HttpPost("{tournamentId}")]
+        public async Task<ActionResult<Season>> PostSeason(int tournamentId, [FromBody] Season season)
+        {
+            var lastseason = await _context.Seasons
+                .Where(s => s.TournamentId == tournamentId)
+                .OrderByDescending(s => s.Edition)
+                .FirstOrDefaultAsync();
+
+            season.Edition = (lastseason != null) ? lastseason.Edition + 1 : 1;
+            season.TournamentId = tournamentId;
+            
+            _context.Seasons.Add(season);
+            await _context.SaveChangesAsync();
+            return CreatedAtAction("GetSeason", new { id = season.Id }, season);
+        }
+
+        [HttpGet("ByTournament/{tournamentId}")]
+        public async Task<ActionResult<IEnumerable<Season>>> GetSeasonsByTournament(int tournamentId)
+        {
+            var seasons = await _context.Seasons
+                .Where(s => s.TournamentId == tournamentId)
+                .ToListAsync();
+
+            if (seasons == null || !seasons.Any())
             {
-                return StatusCode(500, $"Error interno del servidor: {ex.Message}");
+                return NotFound($"No season for torney with ID {tournamentId}.");
             }
+
+            return seasons;
         }
 
     }

@@ -1,9 +1,12 @@
 import { Season } from "./Season";
 
 export interface Tournament {
-    tournamentId: number;
-    nameTournament: string;
-    logoTournament: string;
+    id: number;
+    name: string;
+    logo: string;
     flag: string;
-    season: Season[];
+    seasons: {
+        $id: string;
+        $values: Season[];
+    };
 }
