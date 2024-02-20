@@ -46,7 +46,7 @@ namespace backend.Controllers
             
             _context.Seasons.Add(season);
             await _context.SaveChangesAsync();
-            return CreatedAtAction("GetSeason", new { id = season.Id }, season);
+            return CreatedAtAction("GetSeason", new { id = season.SeasonId }, season);
         }
 
         [HttpGet("ByTournament/{tournamentId}")]
